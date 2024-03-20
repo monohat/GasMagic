@@ -7,6 +7,7 @@
 #include "Logging/LogMacros.h"
 
 #include "AbilitySystemInterface.h"
+#include "AttributeSets/MagicAttributeSet.h"
 
 #include "GasMagicCharacter.generated.h"
 
@@ -74,6 +75,9 @@ protected:
 	{
 		return AbilitySystemComponent;
 	}
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GAS", meta = (AllowPrivateAccess = "true"))
+	const class UMagicAttributeSet* MagicAttributeSet;
 
 public:
 	/** Returns CameraBoom subobject **/

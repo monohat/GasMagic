@@ -10,6 +10,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+
 #include "AbilitySystemComponent.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
@@ -70,6 +71,11 @@ void AGasMagicCharacter::BeginPlay()
 		{
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
+	}
+
+	if (IsValid(AbilitySystemComponent))
+	{
+		MagicAttributeSet = AbilitySystemComponent->GetSet<UMagicAttributeSet>();
 	}
 }
 
