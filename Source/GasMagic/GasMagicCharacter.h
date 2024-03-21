@@ -8,6 +8,9 @@
 
 #include "AbilitySystemInterface.h"
 #include "AttributeSets/MagicAttributeSet.h"
+#include "Utils/GameplayAbilityInputConfig.h"
+#include "Abilities/GameplayAbility.h"
+#include "GameplayAbilitySpec.h"
 
 #include "GasMagicCharacter.generated.h"
 
@@ -78,6 +81,11 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GAS", meta = (AllowPrivateAccess = "true"))
 	const class UMagicAttributeSet* MagicAttributeSet;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS", meta = (AllowPrivateAccess = "true"))
+	TArray<FGameplayAbilityInputConfig> AbilityInputConfig;
+
+	void TryActivateAbility(const FInputActionValue& Value);
 
 public:
 	/** Returns CameraBoom subobject **/

@@ -12,6 +12,8 @@
 #include "InputActionValue.h"
 
 #include "AbilitySystemComponent.h"
+#include "GameplayTagContainer.h"
+#include "Kismet/KismetStringLibrary.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -77,6 +79,24 @@ void AGasMagicCharacter::BeginPlay()
 	{
 		MagicAttributeSet = AbilitySystemComponent->GetSet<UMagicAttributeSet>();
 	}
+
+	// Grant Abilities
+	for (int i = 0; i < AbilityInputConfig.Num(); i++)
+	{
+		if (IsValid(AbilitySystemComponent))
+		{
+			AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(AbilityInputConfig[i].GameplayAbility, 1, i + 1));
+		}
+	}
+	
+}
+
+void AGasMagicCharacter::TryActivateAbility(const FInputActionValue& Value)
+{
+	if (IsValid(AbilitySystemComponent))
+	{
+		AbilitySystemComponent->PressInputID(FCString::Atoi(*Value.ToString()));
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -96,6 +116,13 @@ void AGasMagicCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AGasMagicCharacter::Look);
+
+		// GAS
+		for (int i = 0; i < AbilityInputConfig.Num(); i++)
+		{
+			EnhancedInputComponent->BindAction(AbilityInputConfig[i].AbilityInputAction, ETriggerEvent::Started, this,
+				&AGasMagicCharacter::TryActivateAbility);
+		}
 	}
 	else
 	{
